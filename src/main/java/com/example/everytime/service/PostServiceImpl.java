@@ -85,9 +85,8 @@ public class PostServiceImpl implements PostService {
          */
 
         /*
-        * todo
-        * 게시글 작성 성공 실패 로직 작성
-        * 성공일 경우 성공 여부,실패일 경우 실패했다는 에러메세지를 리턴해야함
+        * @todo 게시글 생성 성공,실패 로직 작성하기
+        * @body 성공일 경우 성공 여부,실패일 경우 실패했다는 에러메세지를 리턴해야함
         * */
 
         return postRepository.save(item.toEntity()).getUuid();
@@ -103,8 +102,8 @@ public class PostServiceImpl implements PostService {
          * */
 
         /*
-         * todo
-         * dto 형식에 맞게 다시짜고 업데이트 해주기
+         * @todo dto update dto 형식에 맞게 구성하기
+         * @body dto 형식에 맞게 다시짜고 업데이트 해주기
          */
         List<Post> posts = postRepository.findByUuid(item.getUuid()); //중복은 없음
         Optional<PostResponseDto> response = null;
@@ -118,8 +117,8 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void deletePost(UUID uuid) {
         /*
-        * todo
-        *  post 삭제여부 확인한뒤, 삭제 할 게시글이 없으면 에러메세지를 출력하는 로직 작성하기
+        *  @todo 게시글 삭제 로직 구현하기
+        *  @body post 삭제여부 확인한뒤, 삭제 할 게시글이 없으면 에러메세지를 출력하는 로직 작성하기
         * */
         postRepository.deleteByUuid(uuid);
     }
