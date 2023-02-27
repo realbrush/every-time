@@ -2,43 +2,60 @@ package com.example.everytime.domain.posts;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
+@Table(name = "posts_table")
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name= "posts_table")
 public class Post {
-
-
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "uuid")
-    private UUID uuid;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT")
-    private Integer id;
+    private Long id;
 
-    @Column(columnDefinition = "VARCHAR(255)")
+    @Column(columnDefinition = "BINARY(16)",nullable = false, updatable = false)
+    private UUID uuid;
+
+    @Column(columnDefinition = "VARCHAR(255)", nullable = false)
     private String title;
 
-    @Column(columnDefinition = "VARCHAR(5000)")
+    @Column(columnDefinition = "VARCHAR(5000)", nullable = false)
     private String contents;
 
-    @Column(columnDefinition = "int")
+    @Column(columnDefinition = "INT", nullable = false)
     private int goods;
 
     @CreationTimestamp
-    @Column(columnDefinition = "timestamp")
+    @Column(nullable = false)
     private LocalDateTime upload_date;
 
+    @Builder
+    public Post(UUID uuid,String title,String contents, int goods) {
+        this.uuid =uuid;
+        this.title = title;
+        this.contents = contents;
+        this.goods = goods;
+    }
+
+    public void update(String title, String contents) {
+        if(!title.isEmpty()){
+            this.title = title;
+        }
+        if (!contents.isEmpty()){
+            this.contents = contents;
+        }
+
+    }
+
+    @PrePersist
+    public void prePersist(){
+        this.uuid = UUID.randomUUID();
+    }
+
 }
+
+
