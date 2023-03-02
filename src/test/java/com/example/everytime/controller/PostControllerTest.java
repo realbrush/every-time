@@ -2,12 +2,10 @@ package com.example.everytime.controller;
 
 import com.example.everytime.domain.posts.Post;
 import com.example.everytime.domain.posts.PostRepository;
-import com.example.everytime.dto.PostSaveRequestDto;
-import org.junit.After;
+import com.example.everytime.dto.PostCreateRequestDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -41,7 +39,7 @@ public class PostControllerTest {
         String title = "title";
         String contents = "content";
 
-        PostSaveRequestDto requestDto = PostSaveRequestDto.builder()
+        PostCreateRequestDto requestDto = PostCreateRequestDto.builder()
                 .title(title)
                 .contents(contents)
                 .build();
