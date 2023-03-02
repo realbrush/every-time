@@ -43,18 +43,15 @@ public class PostController {
     }
     //가져올 리소스가 없을 경우 처리해야함
 
-    @GetMapping() //uuid 기준으로 찾은 리소스 하나를 가져옵니다
-    public ResponseEntity findPost(@RequestParam("uuid") UUID uuid ){
-        try {
-            PostResponseDto post = postService.getOnePost(uuid);
+
+    @GetMapping("{uuid}") //uuid 기준으로 찾은 리소스 하나를 가져옵니다
+    public ResponseEntity findPost(@PathVariable("uuid") UUID uuid ){
+
+        PostResponseDto post = postService.getOnePost(uuid);
             if (post == null) {
                 return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NO_POST, ""), HttpStatus.NOT_FOUND);
             }
             return ResponseEntity.accepted().body(post);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity(DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR,ResponseMessage.FAIL_DEFAUL_RES,""),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
     //원하는 데이터가 없을 경우 처리해야함
 
@@ -74,25 +71,22 @@ public class PostController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_DEFAUL_RES,bindingResult.getAllErrors()),HttpStatus.BAD_REQUEST);
         }
-
         PostResponseDto updatedPost = postService.updatePost(uuid, request.toEntity());
         if (updatedPost == null) {
             return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NO_POST, ""), HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_POST, updatedPost), HttpStatus.OK);
     }
     //요청한 데이터의 유효성을 확인하고 그렇지 않으면 잘못되었다는 메세지를 보내야함
 
     @DeleteMapping("{uuid}")//게시글을 삭제합니다
     public ResponseEntity deletePost(@PathVariable("uuid") UUID uuid){
-        try{
-            postService.deletePost(uuid);
-            return new ResponseEntity(DefaultRes.res(StatusCode.OK,ResponseMessage.DELETE_POST,""),HttpStatus.OK);
-        }catch(NoSuchElementException e) {
-            return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.DELETE_POST_FAILED,""), HttpStatus.NOT_FOUND);
-        }
-
+            boolean is_deleted = postService.deletePost(uuid);
+            if(is_deleted){
+                return new ResponseEntity(DefaultRes.res(StatusCode.OK,ResponseMessage.DELETE_POST,""),HttpStatus.OK);
+            }else{
+                return new ResponseEntity(DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR,ResponseMessage.DELETE_POST_FAILED,""),HttpStatus.INTERNAL_SERVER_ERROR);
+            }
     }
     //해당하는 데이터가 없을 경우 에러메세지를 처리해야한다
 
