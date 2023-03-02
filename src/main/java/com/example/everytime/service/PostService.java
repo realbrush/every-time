@@ -15,7 +15,8 @@ public interface PostService {
     List<PostResponseDto> getPostList(); // return all post
     UUID createPost(PostCreateRequestDto item); // return create post
     PostResponseDto updatePost(UUID uuid,Post post); // return updated post
-    void deletePost(UUID uuid); // delete post by uuid
+    boolean deletePost(UUID uuid); // delete post by uuid
+
 
 }
 
