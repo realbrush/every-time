@@ -1,12 +1,14 @@
 package com.example.everytime.dto;
 
 import com.example.everytime.domain.posts.Post;
-import lombok.Builder;
 
-import javax.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
+@Getter
+@NoArgsConstructor
 public class PostUpdateRequestDto {
 
     @NotNull(message = "제목은 필수 입력 항목입니다.")
