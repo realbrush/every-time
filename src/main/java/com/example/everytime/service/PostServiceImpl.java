@@ -25,7 +25,7 @@ public class PostServiceImpl implements PostService {
             게시글 전체를 가져오는 메서드
             @return List<PostResponseDto>
          */
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findByIsDeleted(false);
         List<PostResponseDto> response = new ArrayList<>();
 
         if(!posts.isEmpty()){
@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
             @param String title
             @return List<PostResponseDto>
          */
-        List<Post> posts = postRepository.findByTitle(title);
+        List<Post> posts = postRepository.findByTitleAndIsDeleted(title,false);
         List<PostResponseDto> response = new ArrayList<>();
 
         if(!posts.isEmpty()){
@@ -111,7 +111,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void deletePost(UUID uuid) {
+    public boolean deletePost(UUID uuid) {
         /*
         *  @todo 게시글 삭제 로직 구현하기
         *  @body post 삭제여부 확인한뒤, 삭제 할 게시글이 없으면 에러메세지를 출력하는 로직 작성하기
@@ -119,11 +119,21 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findByUuid(uuid)
                 .orElseThrow(() -> new NoSuchElementException("해당 게시글이 없습니다. uuid=" + uuid));
 
-        postRepository.delete(post);
+        if(!post.isDeleted()){
+            post.delete(true);
+        }
+
+        return post.isDeleted();
 
     }
     public class PostCreationException extends RuntimeException {
         public PostCreationException(String message) {
+            super(message);
+        }
+    }
+
+    public class PostNotFoundException extends RuntimeException {
+        public PostNotFoundException(String message) {
             super(message);
         }
     }
