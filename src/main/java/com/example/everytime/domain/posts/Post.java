@@ -2,6 +2,7 @@ package com.example.everytime.domain.posts;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,10 +29,18 @@ public class Post {
 
     @Column(columnDefinition = "INT", nullable = false)
     private int goods;
+    //좋아요
+
+    @Column(columnDefinition = "BOOL",nullable = false,name = "is_deleted")
+    private boolean isDeleted;
 
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime upload_date;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime deleted_date;
 
     @Builder
     public Post(UUID uuid,String title,String contents, int goods) {
@@ -51,10 +60,15 @@ public class Post {
 
     }
 
+    public void delete(boolean isDeleted){
+        this.isDeleted = isDeleted;
+    }
+
     @PrePersist
     public void prePersist(){
         this.uuid = UUID.randomUUID();
     }
+
 
 }
 
