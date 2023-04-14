@@ -1,8 +1,8 @@
 package com.example.everytime.service;
 
 import com.example.everytime.domain.posts.Post;
-import com.example.everytime.dto.PostCreateRequestDto;
-import com.example.everytime.dto.PostResponseDto;
+import com.example.everytime.dto.post.PostCreateRequestDto;
+import com.example.everytime.dto.post.PostResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

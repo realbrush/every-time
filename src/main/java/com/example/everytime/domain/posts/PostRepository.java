@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Integer> {
+public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByIsDeleted(boolean is_deleted);
     List<Post> findByTitle(String title);
     List<Post> findByTitleAndIsDeleted(String title,boolean is_deleted);

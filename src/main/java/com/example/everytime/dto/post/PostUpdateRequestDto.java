@@ -1,32 +1,31 @@
-package com.example.everytime.dto;
+package com.example.everytime.dto.post;
 
 import com.example.everytime.domain.posts.Post;
-import lombok.Builder;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
-public class PostCreateRequestDto {
+public class PostUpdateRequestDto {
 
-    @NotEmpty(message = "title must not be empty")
+    @NotNull(message = "제목은 필수 입력 항목입니다.")
     private String title;
-    @NotEmpty(message = "contents must not be empty")
+    @NotNull(message = "내용은 필수 입력 항목입니다.")
     private String contents;
 
-    @Builder
-    public PostCreateRequestDto(String title, String contents){
+    public PostUpdateRequestDto(String title, String contents){
         this.title = title;
         this.contents = contents;
     }
+
     public Post toEntity(){
         return Post.builder()
                 .title(title)
                 .contents(contents)
                 .build();
     }
-}
 
+}

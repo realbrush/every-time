@@ -6,8 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.everytime.domain.posts.PostRepository;
-import com.example.everytime.dto.PostCreateRequestDto;
-import com.example.everytime.dto.PostResponseDto;
+import com.example.everytime.dto.post.PostCreateRequestDto;
+import com.example.everytime.dto.post.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;

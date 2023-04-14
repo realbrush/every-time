@@ -1,4 +1,4 @@
-package com.example.everytime.dto;
+package com.example.everytime.dto.post;
 
 import com.example.everytime.domain.posts.Post;
 import lombok.Getter;
