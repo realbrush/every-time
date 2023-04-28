@@ -57,7 +57,6 @@ public class Post {
         if (!contents.isEmpty()){
             this.contents = contents;
         }
-
     }
 
     public void delete(boolean isDeleted){

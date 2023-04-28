@@ -2,7 +2,7 @@ package com.example.everytime.controller;
 
 import com.example.everytime.domain.posts.Post;
 import com.example.everytime.domain.posts.PostRepository;
-import com.example.everytime.dto.PostCreateRequestDto;
+import com.example.everytime.dto.post.PostCreateRequestDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

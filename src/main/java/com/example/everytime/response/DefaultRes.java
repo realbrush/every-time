@@ -1,6 +1,6 @@
 package com.example.everytime.response;
 
-import com.example.everytime.dto.PostResponseDto;
+import com.example.everytime.dto.post.PostResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
