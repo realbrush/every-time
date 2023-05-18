@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
-    public PasswordEncoder getPasswordEncoder() {
+    public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
     }
 
