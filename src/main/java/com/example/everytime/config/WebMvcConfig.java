@@ -11,6 +11,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(new SessionCheckInterceptor())
-                .excludePathPatterns("/login","/register");
+                .addPathPatterns("**")
+                .excludePathPatterns("/login","/register")
+                .excludePathPatterns("/swagger-ui/**","swagger-resources/**","/v2/api-docs");
     }
 }
