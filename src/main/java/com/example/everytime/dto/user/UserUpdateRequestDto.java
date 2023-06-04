@@ -12,6 +12,12 @@ public class UserUpdateRequestDto {
     @NotNull()
     String nickname;
 
+    public UserUpdateRequestDto(String email,String nickname,String password){
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+    }
+
     public User toEntity(){
         return User.builder().email(email).password(password).nickname(nickname).build();
     }
