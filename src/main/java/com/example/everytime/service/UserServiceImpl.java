@@ -7,6 +7,7 @@ import com.example.everytime.dto.user.UserResponseDto;
 import com.example.everytime.dto.user.UserUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +20,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     @Override
@@ -76,21 +75,15 @@ public class UserServiceImpl implements UserService {
     public Boolean validationPassword(String email, String password) {
         User loginUser = userRepository.findByEmail(email).get(0);
 
-        if (passwordEncoder.matches(password, loginUser.getPassword())) {
-            return true;
-        }
-        return false;
+        return passwordEncoder.matches(password, loginUser.getPassword());
     }
 
     @Override
     public Boolean checkDuplicationEmail(String email) {
         List<User> user = userRepository.findByEmail(email);
 
-        if (user.isEmpty()) {
-            return false;
-            //중복아님
-        }
-        return true;
+        //중복아님
+        return !user.isEmpty();
         //중복임
     }
 
@@ -98,20 +91,13 @@ public class UserServiceImpl implements UserService {
     public Boolean checkDuplicationNickname(String nickname){
         List<User> user = userRepository.findByNickname(nickname);
 
-        if(user.isEmpty()){
-            return false;
-        }
-
-        return true;
+        return !user.isEmpty();
     }
 
     @Override
     public Boolean existUser(String email){
         List<User> user = userRepository.findByEmail(email);
-        if(email.equals(user.get(0).getEmail())){
-            return true;
-        }
-        return false;
+        return email.equals(user.get(0).getEmail());
     }
 
 }

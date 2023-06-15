@@ -1,7 +1,6 @@
 package com.example.everytime.service;
 
 
-import com.example.everytime.domain.users.User;
 import com.example.everytime.dto.user.UserCreateRequestDto;
 import com.example.everytime.dto.user.UserResponseDto;
 import com.example.everytime.dto.user.UserUpdateRequestDto;
@@ -12,11 +11,6 @@ import java.util.UUID;
 
 @Service
 public interface UserService {
-    /*
-    todo
-    user crud service code
-    login,register service code
-     */
 
     List<UserResponseDto> getUserList();
     UserResponseDto getUserData(UUID uuid);
