@@ -136,6 +136,15 @@ public class PostServiceImpl implements PostService {
         return post.isDeleted();
 
     }
+
+    @Override
+    public Long likePost(UUID uuid,boolean islike) {
+        Optional<Post> post = postRepository.findByUuid(uuid);
+        post.get().updateLike(islike);
+        long goods = postRepository.save(post.get()).getGoods();
+        return goods;
+    }
+
     public class PostCreationException extends RuntimeException {
         public PostCreationException(String message) {
             super(message);

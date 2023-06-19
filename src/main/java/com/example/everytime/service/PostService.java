@@ -18,8 +18,7 @@ public interface PostService {
     UUID createPost(PostCreateRequestDto item, UserLoginRequestDto user); // return create post
     PostResponseDto updatePost(UUID uuid,Post post); // return updated post
     boolean deletePost(UUID uuid); // delete post by uuid
-
-
+    Long likePost(UUID uuid,boolean islike); // 해당 게시글의 좋아요 갯수를 리턴
 }
 
 
