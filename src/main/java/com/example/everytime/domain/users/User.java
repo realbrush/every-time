@@ -1,6 +1,7 @@
 package com.example.everytime.domain.users;
 
 
+import com.example.everytime.domain.posts.Post;
 import com.example.everytime.dto.post.PostUpdateRequestDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,6 +23,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "writer")
+    List<Post> posts;
 
     @Column(columnDefinition = "BINARY(16)",nullable = false,updatable = false)
     private UUID uuid;
