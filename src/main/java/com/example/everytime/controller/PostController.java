@@ -98,4 +98,19 @@ public class PostController {
     //해당하는 데이터가 없을 경우 에러메세지를 처리해야한다
 
 
+    //좋아요
+
+    @PostMapping("{uuid}/like")
+    public ResponseEntity likePost(@PathVariable("uuid") UUID uuid){
+        
+        long goods = postService.likePost(uuid,true);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK,ResponseMessage.UPDATE_POST,goods),HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("{uuid}/like")
+    public ResponseEntity unlikePost(@PathVariable("uuid") UUID uuid){
+        long goods = postService.likePost(uuid,false);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK,ResponseMessage.UPDATE_POST,goods),HttpStatus.OK);
+    }
 }
