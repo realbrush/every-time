@@ -1,5 +1,6 @@
 package com.example.everytime.domain.posts;
 
+import com.example.everytime.domain.users.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,6 +18,10 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @JoinColumn(name="user_id",nullable = false)
+    private User writer;
 
     @Column(columnDefinition = "BINARY(16)",nullable = false, updatable = false)
     private UUID uuid;
@@ -43,8 +48,9 @@ public class Post {
     private LocalDateTime deleted_date;
 
     @Builder
-    public Post(UUID uuid,String title,String contents, int goods) {
-        this.uuid =uuid;
+    public Post(UUID uuid,User writer,String title,String contents, int goods) {
+        this.uuid = uuid;
+        this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.goods = goods;
@@ -57,6 +63,17 @@ public class Post {
         if (!contents.isEmpty()){
             this.contents = contents;
         }
+    }
+    public void updateLike(boolean isLike){
+        if(isLike){
+            this.goods += 1;
+        }else{
+            this.goods -= 1;
+        }
+    }
+
+    public void setWriter(User writer){
+        this.writer = writer;
     }
 
     public void delete(boolean isDeleted){

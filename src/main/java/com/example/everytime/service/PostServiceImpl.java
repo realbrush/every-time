@@ -6,8 +6,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.everytime.domain.posts.PostRepository;
+import com.example.everytime.domain.users.User;
+import com.example.everytime.domain.users.UserRepository;
 import com.example.everytime.dto.post.PostCreateRequestDto;
 import com.example.everytime.dto.post.PostResponseDto;
+import com.example.everytime.dto.user.UserLoginRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<PostResponseDto> getPostList() {
@@ -72,14 +76,20 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public UUID createPost(PostCreateRequestDto item) {
+    public UUID createPost(PostCreateRequestDto item, UserLoginRequestDto loginRequest) {
         /**
             새로운 게시글을 만드는 메서드
             @param PostCreateRequestDto
             @return UUID (생성한 문서의 UUID)
          */
+
         try{
-            return postRepository.save(item.toEntity()).getUuid();
+
+            User user = userRepository.findByEmail(loginRequest.getEmail()).get(0);
+            Post post = item.toEntity();
+            post.setWriter(user); // 유저 데이터 설정
+
+            return postRepository.save(post).getUuid();
         }catch (DataAccessException e){
             throw new PostCreationException("게시글 생성에 실패하였습니다.");
         }
@@ -126,6 +136,15 @@ public class PostServiceImpl implements PostService {
         return post.isDeleted();
 
     }
+
+    @Override
+    public Long likePost(UUID uuid,boolean islike) {
+        Optional<Post> post = postRepository.findByUuid(uuid);
+        post.get().updateLike(islike);
+        long goods = postRepository.save(post.get()).getGoods();
+        return goods;
+    }
+
     public class PostCreationException extends RuntimeException {
         public PostCreationException(String message) {
             super(message);
