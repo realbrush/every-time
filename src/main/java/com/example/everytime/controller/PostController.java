@@ -3,6 +3,7 @@ package com.example.everytime.controller;
 import com.example.everytime.dto.post.PostCreateRequestDto;
 import com.example.everytime.dto.post.PostResponseDto;
 import com.example.everytime.dto.post.PostUpdateRequestDto;
+import com.example.everytime.dto.user.UserLoginRequestDto;
 import com.example.everytime.response.DefaultRes;
 import com.example.everytime.response.ResponseMessage;
 import com.example.everytime.response.StatusCode;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validator;
@@ -55,12 +58,17 @@ public class PostController {
     // 원하는 데이터가 없을 경우 처리해야함
 
     @PostMapping() //게시글을 생성합니다
-    public ResponseEntity createPost(@RequestBody() @Valid PostCreateRequestDto item){
+    public ResponseEntity createPost(@RequestBody() @Valid PostCreateRequestDto item,HttpServletRequest request){
         Set<ConstraintViolation<PostCreateRequestDto>> violation = validator.validate(item);
+
+        HttpSession session = request.getSession();
+        UserLoginRequestDto user = (UserLoginRequestDto) session.getAttribute("user");
+
         if(!violation.isEmpty()){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.accepted().body(postService.createPost(item));
+
+        return ResponseEntity.accepted().body(postService.createPost(item,user));
     }
     // 요청한 데이터의 유효성을 확인하고 그렇지 않으면 잘못되었다는 메세지를 보내야함
 
@@ -88,5 +96,6 @@ public class PostController {
             }
     }
     //해당하는 데이터가 없을 경우 에러메세지를 처리해야한다
+
 
 }
