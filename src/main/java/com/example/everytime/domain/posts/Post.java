@@ -64,6 +64,13 @@ public class Post {
             this.contents = contents;
         }
     }
+    public void updateLike(boolean isLike){
+        if(isLike){
+            this.goods += 1;
+        }else{
+            this.goods -= 1;
+        }
+    }
 
     public void setWriter(User writer){
         this.writer = writer;
