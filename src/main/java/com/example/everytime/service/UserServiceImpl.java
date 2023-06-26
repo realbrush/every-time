@@ -1,7 +1,9 @@
 package com.example.everytime.service;
 
+import com.example.everytime.domain.posts.Post;
 import com.example.everytime.domain.users.User;
 import com.example.everytime.domain.users.UserRepository;
+import com.example.everytime.dto.post.PostResponseDto;
 import com.example.everytime.dto.user.UserCreateRequestDto;
 import com.example.everytime.dto.user.UserResponseDto;
 import com.example.everytime.dto.user.UserUpdateRequestDto;
@@ -98,6 +100,16 @@ public class UserServiceImpl implements UserService {
     public Boolean existUser(String email){
         List<User> user = userRepository.findByEmail(email);
         return email.equals(user.get(0).getEmail());
+    }
+
+    @Override
+    public List<PostResponseDto> getPostByUser(UUID uuid) {
+        List<Post> posts = userRepository.findByUuid(uuid).getPosts();
+        List<PostResponseDto> result = new ArrayList<>();
+        for ( Post p:posts ) {
+            result.add(new PostResponseDto(p));
+        }
+        return result;
     }
 
 }

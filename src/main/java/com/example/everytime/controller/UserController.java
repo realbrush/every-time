@@ -1,5 +1,6 @@
 package com.example.everytime.controller;
 
+import com.example.everytime.dto.post.PostResponseDto;
 import com.example.everytime.dto.user.UserCreateRequestDto;
 import com.example.everytime.dto.user.UserResponseDto;
 import com.example.everytime.dto.user.UserUpdateRequestDto;
@@ -73,4 +74,13 @@ public class UserController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK,ResponseMessage.REQUEST_SUCCESS,userResponseDto),HttpStatus.OK);
     }
 
+
+    //해당 유저의 게시글 조회
+    @GetMapping("{uuid}/posts")
+    public ResponseEntity getMyPost(@PathVariable UUID uuid){
+        List<PostResponseDto> posts = userService.getPostByUser(uuid);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK,ResponseMessage.REQUEST_SUCCESS,posts),HttpStatus.OK);
+    }
+
+    //해당 유저의 댓글 조회
 }
