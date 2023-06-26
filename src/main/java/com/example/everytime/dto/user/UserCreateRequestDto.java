@@ -3,6 +3,7 @@ package com.example.everytime.dto.user;
 import com.example.everytime.domain.users.User;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -26,6 +27,7 @@ public class UserCreateRequestDto {
         this.nickname = nickname;
         this.password = password;
     }
+
 
     public User toEntity(){
         return User.builder().email(email).nickname(nickname).password(password).build();

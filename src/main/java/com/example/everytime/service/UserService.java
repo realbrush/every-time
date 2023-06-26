@@ -1,6 +1,7 @@
 package com.example.everytime.service;
 
 
+import com.example.everytime.dto.post.PostResponseDto;
 import com.example.everytime.dto.user.UserCreateRequestDto;
 import com.example.everytime.dto.user.UserResponseDto;
 import com.example.everytime.dto.user.UserUpdateRequestDto;
@@ -30,5 +31,7 @@ public interface UserService {
     Boolean validationPassword(String email,String password);
 
     Boolean existUser(String email);
+
+    List<PostResponseDto> getPostByUser(UUID uuid);
 
 }
