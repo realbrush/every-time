@@ -3,6 +3,7 @@ package com.example.everytime.service;
 import com.example.everytime.domain.posts.Post;
 import com.example.everytime.domain.users.User;
 import com.example.everytime.domain.users.UserRepository;
+import com.example.everytime.dto.post.PostDto;
 import com.example.everytime.dto.post.PostResponseDto;
 import com.example.everytime.dto.user.UserCreateRequestDto;
 import com.example.everytime.dto.user.UserResponseDto;
@@ -103,13 +104,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<PostResponseDto> getPostByUser(UUID uuid) {
+    public List<PostDto> getPostByUser(UUID uuid) {
         List<Post> posts = userRepository.findByUuid(uuid).getPosts();
-        List<PostResponseDto> result = new ArrayList<>();
+        List<PostDto> result = new ArrayList<>();
+        //nested 된 dto에서 nested 되지 않은 dto로 변경함
+        //기존 유저 정보가 들어가는 dto에서 유저정보를 빼고 post 정보만 들어간 dto로 변경함
         for ( Post p:posts ) {
-            result.add(new PostResponseDto(p));
+            result.add(new PostDto(p));
         }
         return result;
+    }
+
+    @Override
+    public UserResponseDto updateNickname(String email,String nickname) {
+        User oldUser = userRepository.findByEmail(email).get(0);
+        oldUser.setNickname(nickname);
+        userRepository.save(oldUser);
+        User newUser = userRepository.findByNickname(nickname).get(0);
+        return new UserResponseDto(newUser);
     }
 
 }
