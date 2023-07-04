@@ -1,6 +1,7 @@
 package com.example.everytime.domain.posts;
 
 import com.example.everytime.domain.users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,7 +20,9 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @JsonIgnore //순환참조관계 막기
     @JoinColumn(name="user_id",nullable = false)
     private User writer;
 

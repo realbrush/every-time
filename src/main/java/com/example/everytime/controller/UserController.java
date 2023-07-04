@@ -1,7 +1,9 @@
 package com.example.everytime.controller;
 
+import com.example.everytime.dto.post.PostDto;
 import com.example.everytime.dto.post.PostResponseDto;
 import com.example.everytime.dto.user.UserCreateRequestDto;
+import com.example.everytime.dto.user.UserLoginRequestDto;
 import com.example.everytime.dto.user.UserResponseDto;
 import com.example.everytime.dto.user.UserUpdateRequestDto;
 import com.example.everytime.response.DefaultRes;
@@ -13,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validator;
@@ -78,9 +82,23 @@ public class UserController {
     //해당 유저의 게시글 조회
     @GetMapping("{uuid}/posts")
     public ResponseEntity getMyPost(@PathVariable UUID uuid){
-        List<PostResponseDto> posts = userService.getPostByUser(uuid);
+        List<PostDto> posts = userService.getPostByUser(uuid);
+        if(posts.isEmpty()){
+            return new ResponseEntity(DefaultRes.res(StatusCode.NO_CONTENT,ResponseMessage.NO_POST,"작성한 게시글이 없습니다"),HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity(DefaultRes.res(StatusCode.OK,ResponseMessage.REQUEST_SUCCESS,posts),HttpStatus.OK);
     }
 
     //해당 유저의 댓글 조회
+
+
+
+    //닉네임 수정
+    @PatchMapping ("{uuid}/nickname")
+    public ResponseEntity updateNickname(String nickname, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        UserLoginRequestDto user = (UserLoginRequestDto) session.getAttribute("user");
+        UserResponseDto responseDto = userService.updateNickname(user.getEmail(),nickname);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK,ResponseMessage.REQUEST_SUCCESS,responseDto),HttpStatus.OK);
+    }
 }
